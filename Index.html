@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>אתגר 24 שעות</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f0e8;
+    --accent: #ff3c00;
+    --accent2: #ffd600;
+    --gray: #1a1a1a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Heebo', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Ticker */
+  .ticker-wrap {
+    background: var(--accent);
+    padding: 10px 0;
+    overflow: hidden;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .ticker {
+    display: flex;
+    white-space: nowrap;
+    animation: ticker 18s linear infinite;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--black);
+  }
+  .ticker span { padding: 0 40px; }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: 60px 40px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '24';
+    position: absolute;
+    font-size: clamp(200px, 40vw, 480px);
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.06);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    line-height: 1;
+    font-family: 'Space Mono', monospace;
+    animation: pulse-bg 4s ease-in-out infinite;
+  }
+  @keyframes pulse-bg {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: var(--black);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 32px;
+    width: fit-content;
+    font-family: 'Space Mono', monospace;
+  }
+  .tag::before {
+    content: '●';
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .hero-content { position: relative; z-index: 2; }
+
+  h1 {
+    font-size: clamp(40px, 7vw, 96px);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+    display: block;
+  }
+
+  .subtitle {
+    font-size: clamp(16px, 2.5vw, 24px);
+    font-weight: 300;
+    max-width: 560px;
+    line-height: 1.5;
+    color: rgba(245,240,232,0.7);
+    margin-bottom: 48px;
+    border-right: 3px solid var(--accent);
+    padding-right: 20px;
+  }
+
+  /* Countdown */
+  .countdown-section {
+    background: var(--gray);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 32px 36px;
+    margin-bottom: 40px;
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+  }
+  .countdown-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: rgba(245,240,232,0.4);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .countdown-timer {
+    display: flex;
+    gap: 24px;
+    align-items: flex-end;
+  }
+  .time-block { text-align: center; }
+  .time-num {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 700;
+    color: var(--accent2);
+    line-height: 1;
+    display: block;
+    min-width: 80px;
+  }
+  .time-label {
+    font-size: 11px;
+    color: rgba(245,240,232,0.4);
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+    display: block;
+  }
+  .time-sep {
+    font-family: 'Space Mono', monospace;
+    font-size: 48px;
+    color: rgba(245,240,232,0.2);
+    padding-bottom: 8px;
+  }
+
+  /* Form */
+  .form-section {
+    position: relative;
+    z-index: 2;
+    max-width: 640px;
+  }
+  .form-title {
+    font-size: 13px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.15em;
+    color: rgba(245,240,232,0.5);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .form-row {
+    display: flex;
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .form-row:focus-within { border-color: var(--accent); }
+
+  textarea {
+    flex: 1;
+    background: var(--gray);
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-family: 'Heebo', sans-serif;
+    font-size: 16px;
+    padding: 20px;
+    resize: none;
+    min-height: 100px;
+    line-height: 1.5;
+  }
+  textarea::placeholder { color: rgba(245,240,232,0.25); }
+
+  .submit-btn {
+    background: var(--accent);
+    border: none;
+    color: var(--black);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 20px 28px;
+    cursor: pointer;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transition: background 0.2s, transform 0.1s;
+    text-transform: uppercase;
+  }
+  .submit-btn:hover { background: var(--accent2); }
+  .submit-btn:active { transform: scale(0.97); }
+
+  /* Ideas feed */
+  .feed-section {
+    padding: 80px 40px;
+    background: var(--gray);
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .feed-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+  }
+  .feed-title {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .feed-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: rgba(245,240,232,0.4);
+  }
+
+  .ideas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .idea-card {
+    background: var(--black);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 3px;
+    padding: 24px;
+    position: relative;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+    animation: fadeUp 0.4s ease both;
+  }
+  .idea-card:hover {
+    border-color: rgba(255,60,0,0.4);
+    transform: translateY(-2px);
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .idea-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 12px;
+    letter-spacing: 0.1em;
+  }
+  .idea-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(245,240,232,0.85);
+  }
+  .idea-time {
+    margin-top: 16px;
+    font-size: 11px;
+    color: rgba(245,240,232,0.25);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .empty-state {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 60px;
+    border: 1px dashed rgba(255,255,255,0.1);
+    border-radius: 3px;
+    color: rgba(245,240,232,0.3);
+    font-size: 15px;
+    line-height: 2;
+  }
+
+  /* Winner banner */
+  .winner-banner {
+    display: none;
+    background: var(--accent2);
+    color: var(--black);
+    padding: 24px 40px;
+    font-weight: 700;
+    font-size: 18px;
+    align-items: center;
+    gap: 16px;
+  }
+  .winner-banner.visible { display: flex; }
+  .winner-icon { font-size: 28px; }
+
+  /* Footer */
+  footer {
+    padding: 32px 40px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: rgba(245,240,232,0.25);
+    letter-spacing: 0.1em;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--accent2);
+    color: var(--black);
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    padding: 16px 32px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    z-index: 999;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 40px 20px 32px; }
+    .feed-section { padding: 60px 20px; }
+    footer { padding: 24px 20px; flex-direction: column; gap: 8px; }
+    .countdown-section { padding: 24px; }
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<!-- Ticker -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>👉 שלחו רעיון · 24 שעות · אני בוחר אחד · מפרק אותו בלייב בהרצאה</span>
+    <span>👉 שלחו רעיון · 24 שעות · אני בוחר אחד · מפרק אותו בלייב בהרצאה</span>
+    <span>👉 שלחו רעיון · 24 שעות · אני בוחר אחד · מפרק אותו בלייב בהרצאה</span>
+    <span>👉 שלחו רעיון · 24 שעות · אני בוחר אחד · מפרק אותו בלייב בהרצאה</span>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="tag">אתגר פתוח · לייב</div>
+    <h1>יש לכם<em>24 שעות.</em></h1>
+    <p class="subtitle">שלחו לי רעיון — אני בוחר אחד ומפרק אותו בלייב בהרצאה. ללא פילטרים. ללא דפוס מוכן מראש.</p>
+
+    <div class="countdown-section">
+      <div class="countdown-label">⏳ זמן שנשאר לשלוח רעיון</div>
+      <div class="countdown-timer" style="direction:ltr;">
+        <div class="time-block">
+          <span class="time-num" id="hours">24</span>
+          <span class="time-label">שעות</span>
+        </div>
+        <div class="time-sep">:</div>
+        <div class="time-block">
+          <span class="time-num" id="minutes">00</span>
+          <span class="time-label">דקות</span>
+        </div>
+        <div class="time-sep">:</div>
+        <div class="time-block">
+          <span class="time-num" id="seconds">00</span>
+          <span class="time-label">שניות</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-title">// שלחו רעיון</div>
+      <div class="form-row">
+        <textarea id="ideaInput" placeholder="הרעיון שלכם — כל נושא, כל תחום, כל שאלה שאי פעם שרפה אתכם..." maxlength="300"></textarea>
+        <button class="submit-btn" onclick="submitIdea()">שלח ←</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Winner banner (shown after countdown ends) -->
+<div class="winner-banner" id="winnerBanner">
+  <span class="winner-icon">🏆</span>
+  <span>הזמן נגמר! הרעיון הנבחר יוכרז בקרוב בהרצאה הלייב.</span>
+</div>
+
+<!-- Feed -->
+<section class="feed-section">
+  <div class="feed-header">
+    <h2 class="feed-title">הרעיונות שהגיעו</h2>
+    <span class="feed-count" id="feedCount">0 רעיונות</span>
+  </div>
+  <div class="ideas-grid" id="ideasGrid">
+    <div class="empty-state">
+      עוד אין רעיונות — <br>היו הראשונים לשלוח 👆
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>CHALLENGE 24HRS</span>
+  <span>© 2025</span>
+</footer>
+
+<div class="toast" id="toast">✅ הרעיון נשלח בהצלחה!</div>
+
+<script>
+  // --- Supabase ---
+  const { createClient } = supabase;
+  const sb = createClient(
+    'https://dvumzmnbnkdvkvousupi.supabase.co',
+    'sb_publishable_lyk9mt9CtkF8baDEvYBVGg_GHtZcUKP'
+  );
+
+  // --- Countdown: 31.3.2025 21:00 Israel time (UTC+3) = 18:00 UTC ---
+  const endTime = 1774980000000; // Mon Mar 31 2026 21:00:00 GMT+0300
+
+  function updateCountdown() {
+    const diff = Math.max(0, endTime - Date.now());
+    document.getElementById('hours').textContent = String(Math.floor(diff / 3600000)).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+    document.getElementById('seconds').textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+    if (diff === 0) document.getElementById('winnerBanner').classList.add('visible');
+  }
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // --- Helpers ---
+  function escapeHtml(t) {
+    return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function timeAgo(ts) {
+    const diff = Date.now() - new Date(ts).getTime();
+    if (diff < 60000) return 'עכשיו';
+    if (diff < 3600000) return `לפני ${Math.floor(diff/60000)} דקות`;
+    if (diff < 86400000) return `לפני ${Math.floor(diff/3600000)} שעות`;
+    return 'אתמול';
+  }
+
+  // --- Render ---
+  function renderIdeas(ideas) {
+    const grid = document.getElementById('ideasGrid');
+    const count = document.getElementById('feedCount');
+    count.textContent = ideas.length + (ideas.length === 1 ? ' רעיון' : ' רעיונות');
+    if (ideas.length === 0) {
+      grid.innerHTML = '<div class="empty-state">עוד אין רעיונות — <br>היו הראשונים לשלוח 👆</div>';
+      return;
+    }
+    grid.innerHTML = ideas.map((idea, i) => `
+      <div class="idea-card" style="animation-delay:${i * 0.05}s">
+        <div class="idea-num">#${String(ideas.length - i).padStart(3,'0')}</div>
+        <div class="idea-text">${escapeHtml(idea.text)}</div>
+        <div class="idea-time">${timeAgo(idea.created_at)}</div>
+      </div>
+    `).join('');
+  }
+
+  // --- Load from Supabase ---
+  async function loadIdeas() {
+    const { data, error } = await sb.from('ideas').select('*').order('created_at', { ascending: false }).limit(50);
+    if (!error) renderIdeas(data);
+  }
+
+  // --- Submit to Supabase ---
+  async function submitIdea() {
+    const input = document.getElementById('ideaInput');
+    const text = input.value.trim();
+    if (!text) return;
+    if (Date.now() > endTime) { showToast('⛔ הזמן נגמר — האתגר סגור'); return; }
+
+    const btn = document.querySelector('.submit-btn');
+    btn.textContent = '...';
+    btn.disabled = true;
+
+    const { error } = await sb.from('ideas').insert([{ text }]);
+    btn.textContent = 'שלח ←';
+    btn.disabled = false;
+
+    if (error) { showToast('❌ שגיאה בשליחה, נסה שוב'); return; }
+    input.value = '';
+    showToast('✅ הרעיון נשלח בהצלחה!');
+    loadIdeas();
+  }
+
+  // --- Realtime subscription ---
+  sb.channel('ideas-channel')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'ideas' }, () => loadIdeas())
+    .subscribe();
+
+  // --- Toast ---
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  document.getElementById('ideaInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submitIdea(); }
+  });
+
+  loadIdeas();
+</script>
+
+</body>
+</html>
